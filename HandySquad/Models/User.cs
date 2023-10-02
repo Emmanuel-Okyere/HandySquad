@@ -10,13 +10,17 @@ public class User
     [Required] [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
-    public string? Username { get; set; }
+    public string Username { get; set; }
     [Required]
-    public string? EmailAddress { get; set; }
+    public string EmailAddress { get; set; }
     [Required]
-    public string? TelephoneNumber { get; set; }
+    public string TelephoneNumber { get; set; }
     [Required]
     public AccountType AccountType { get; set; }
+    [JsonIgnore]
+    public byte[] PasswordSalt { get; set; }
+    [JsonIgnore]
+    public byte[] PasswordHash { get; set; }
     [JsonIgnore]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [JsonIgnore]

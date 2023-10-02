@@ -1,7 +1,7 @@
-using System.Data.Entity;
 using HandySquad.Data;
 using HandySquad.Models;
 using HandySquad.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HandySquad.Repositories.Implementations;
 
@@ -16,7 +16,7 @@ public class UserRepository: IUserRepository
 
     public async Task<User> AddUser(User user)
     {
-        var newUser =await _dataContext.AddAsync(user);
+        var newUser = await _dataContext.Users.AddAsync(user);
         await _dataContext.SaveChangesAsync();
         return newUser.Entity;
     }
@@ -26,9 +26,10 @@ public class UserRepository: IUserRepository
         return await _dataContext.Users.FirstOrDefaultAsync(a=>a.Id== id);
     }
 
-    public async Task<User> GetUserByEmailAddress(string emailAddress)
+    public async Task<User?> GetUserByEmailAddress(string emailAddress)
     {
-        return await _dataContext.Users.FirstOrDefaultAsync(a => a.EmailAddress == emailAddress);
+        var savedUser = await _dataContext.Users.FirstOrDefaultAsync(t => t.EmailAddress == emailAddress);
+        return savedUser;
     }
 
     public void DeleteUserById(User user)
