@@ -1,5 +1,7 @@
 using HandySquad.dto;
 using HandySquad.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HandySquad.Controllers;
@@ -29,6 +31,7 @@ public class AuthenticationController: ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
     {
+        Console.WriteLine(HttpContext.User.Claims);
         return Ok(await _authenticationService.Login(loginRequestDto));
     }
 }

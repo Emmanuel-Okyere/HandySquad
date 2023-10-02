@@ -100,13 +100,16 @@ public class AuthenticationService: IAuthenticationService, IJwtService
             new Claim(ClaimTypes.Email,emailAddress)
         };
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:Key").Value));
+            Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:Key").Value!));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(1),
-            SigningCredentials = credentials
+            SigningCredentials = credentials,
+            Audience = _configuration.GetSection("JWT:Audience").Value!,
+            Issuer = _configuration.GetSection("JWT:Issuer").Value!,
+            IssuedAt = DateTime.UtcNow,
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);

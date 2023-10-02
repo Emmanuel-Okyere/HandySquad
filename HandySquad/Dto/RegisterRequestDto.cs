@@ -5,9 +5,9 @@ namespace HandySquad.dto;
 
 public class RegisterRequestDto: LoginRequestDto
 {
-    [Required]
+    [Required, MinLength(5)]
     public string Username { get; set; }
-    [Required]
+    [Required, Phone]
     public string TelephoneNumber { get; set; }
     [Required]
     public AccountType AccountType { get; set; }
