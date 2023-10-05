@@ -17,6 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddDbContext<DataContext>(option =>
     option.UseNpgsql(builder.Configuration.GetConnectionString("connection")));
+//option.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
+//registery repositories &bservices  
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new NotFound404NotFoundException());
