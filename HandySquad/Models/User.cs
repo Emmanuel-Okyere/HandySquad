@@ -25,4 +25,6 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [JsonIgnore]
     public DateTime? UpdatedAt { get; set; } = null;
+    
+    
 }
