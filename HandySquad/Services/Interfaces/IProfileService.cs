@@ -7,7 +7,7 @@ public interface IProfileService
     Task<IEnumerable<ProfileDto>> GetAllProfilesAsync();
     Task<ProfileDto> GetProfileByIdAsync(int id);
     Task<int> CreateProfileAsync(CreateProfileDto createProfileDto);
-    Task UpdateProfileAsync(int id, CreateProfileDto updateProfileDto);
+    Task UpdateProfileAsync(int id, UpdateProfileDto updateProfileDto);
     Task DeleteProfileAsync(int id);
    // Task SaveChangesAsync();
 }
