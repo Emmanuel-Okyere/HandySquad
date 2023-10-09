@@ -22,6 +22,89 @@ namespace HandySquad.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("HandySquad.Models.Profile", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NumberOfRatings")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Occupation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Ratings")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("HandySquad.Models.ProfileImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileImages");
+                });
+
+            modelBuilder.Entity("HandySquad.Models.SkillSet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Skills")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("SkillSets");
+                });
+
             modelBuilder.Entity("HandySquad.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -41,10 +124,15 @@ namespace HandySquad.Migrations
                         .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
                         .HasColumnType("bytea");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TelephoneNumber")
                         .IsRequired()
@@ -59,7 +147,40 @@ namespace HandySquad.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProfileId")
+                        .IsUnique();
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("HandySquad.Models.SkillSet", b =>
+                {
+                    b.HasOne("HandySquad.Models.Profile", "Profile")
+                        .WithMany("SkillSets")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("HandySquad.Models.User", b =>
+                {
+                    b.HasOne("HandySquad.Models.Profile", "Profile")
+                        .WithOne("User")
+                        .HasForeignKey("HandySquad.Models.User", "ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("HandySquad.Models.Profile", b =>
+                {
+                    b.Navigation("SkillSets");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -5,9 +5,9 @@ namespace HandySquad.Services.Interfaces;
 
 public interface ISkillSetService
 {
-    Task<List<SkillSet>> GetAllSkillSetsAsync();
-    Task<SkillSet?> GetSkillSetByIdAync(int id);
-    Task CreateSkillSetAsync(SkillSet skillSet);
-    Task UpdateSkillSetAync(int id, SkillSetDto updateSkillSet);
+    Task<List<SkillSetDto>> GetAllSkillSetsAsync();
+    Task<SkillSetDto?> GetSkillSetByIdAync(int id);
+    Task<SkillSetDto> CreateSkillSetAsync(SkillSetDto skillSetDto);
+    Task UpdateSkillSetAync(int id, SkillSetDto skillSetDto);
     Task DeleteSkillSetAsync(int id);
 }

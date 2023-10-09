@@ -1,4 +1,6 @@
+using AutoMapper;
 using HandySquad.dto.Profile;
+using HandySquad.Models;
 using HandySquad.Repositories.Implementations;
 using HandySquad.Services.Interfaces;
 
@@ -7,61 +9,41 @@ namespace HandySquad.Services.Implementations;
 public class ProfileImageService:IProfileImageService
 {
     private readonly ProfileImageRepository _profileImageRepository;
+    private readonly IMapper _mapper;
 
-    public ProfileImageService(ProfileImageRepository profileImageRepository)
+    public ProfileImageService(ProfileImageRepository profileImageRepository,IMapper mapper)
     {
         _profileImageRepository = profileImageRepository;
+        _mapper = mapper;
     }
-    public async Task<int> UploadImageAsync(ProfileImageDto profileImageDto)
+
+    public async Task<ProfileImageDto> GetProfileImageAsync(int id)
     {
-        //Validate the ImageDto
-        if (profileImageDto == null)
-        {
-            throw new ArgumentNullException(nameof(profileImageDto), "Image data is null");
-        }
-
-        if (string.IsNullOrWhiteSpace(profileImageDto.FileName))
-        {
-            throw new ArgumentException("FileName must not be empty", nameof(profileImageDto.FileName));
-        }
-
-        if (profileImageDto.Data == null || profileImageDto.Data.Length == 0)
-        {
-            throw new ArgumentException("Image Data must not be null or empty", nameof(profileImageDto.Data));
-        }
-
-        return await _profileImageRepository.UploadImageAync(profileImageDto);
-     
+        var profileImage = await _profileImageRepository.GetProfileImageByIdAsync(id);
+        return _mapper.Map<ProfileImageDto>(profileImage);
     }
 
-    public async Task UpdateImageAsync(int id, ProfileImageDto profileImageDto)
+    public async Task CreateProfileImageAsync(ProfileImageDto profileImageDto)
     {
-        //id validation
-        if (id <= 0)
-        {
-            throw new ArgumentException("invlaid Image Id", nameof(id));
-        }
-        //validate the profile image dto
-        if (profileImageDto == null)
-        {
-            throw new ArgumentNullException(nameof(profileImageDto), "Image data is null");
-        }
-
-        if (string.IsNullOrWhiteSpace(profileImageDto.FileName))
-        {
-            throw new ArgumentException("FileName must not be empty", nameof(profileImageDto.FileName));
-        }
-
-        if (profileImageDto==null|| profileImageDto.Data.Length==0)
-        {
-            throw new ArgumentException("image data must not be null or empty", nameof(profileImageDto.Data));
-        }
-
-        await _profileImageRepository.UploadImageAsync(id, profileImageDto);
+        var profileImage = _mapper.Map<ProfileImage>(profileImageDto);
+        await _profileImageRepository.CreateProfileImageAsync(profileImage);
     }
 
-    public async Task<ProfileImageDto> GetImageAsync(int id)
+    public async Task UpdateProfileImageAsync(int id, ProfileImageDto profileImageDto)
     {
-        return await _profileImageRepository.GetImageAsync(id);
+        var existingProfileImage = await _profileImageRepository.GetProfileImageByIdAsync(id);
+        if (existingProfileImage != null)
+        {
+            _mapper.Map(profileImageDto, existingProfileImage);
+            await _profileImageRepository.UpdateProfileImageAsync(existingProfileImage);
+        }
     }
+
+    public async Task DeleteProfileImageAsync(int id)
+    {
+        await _profileImageRepository.DeleteProfileImageAsync(id);
+
+    }
+
+   
 }

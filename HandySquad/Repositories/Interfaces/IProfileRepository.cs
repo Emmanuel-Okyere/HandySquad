@@ -5,10 +5,9 @@ namespace HandySquad.Repositories.Interfaces;
 
 public interface IProfileRepository
 {
-    Task<IEnumerable<ProfileDto>> GetAllProfilesAsync();
-    Task<ProfileDto> GetProfileByIdAsync(int id);
-    Task<int> CreateProfileAsync(CreateProfileDto createProfileDto);
-    Task UpdateProfileAsync(int id, UpdateProfileDto updateProfileDto);
+    Task<Profile> GetProfileByIdAsync(int id);
+    Task<IEnumerable<Profile>> GetAllProfilesAsync();
+    Task CreateProfileAsync(Profile profile);
+    Task UpdateProfileAsync(Profile profile);
     Task DeleteProfileAsync(int id);
-    //Task SaveChangesAsync();
 }

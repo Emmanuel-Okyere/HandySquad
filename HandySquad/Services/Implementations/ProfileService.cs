@@ -1,3 +1,4 @@
+using AutoMapper;
 using HandySquad.Data;
 using HandySquad.dto.Profile;
 using HandySquad.Repositories.Interfaces;
@@ -8,106 +9,42 @@ namespace HandySquad.Services.Implementations;
 public class ProfileService:IProfileService
 {
     private readonly IProfileRepository _profileRepository;
+    private readonly IMapper _mapper;
 
-    public ProfileService(IProfileRepository profileRepository)
+    public ProfileService(IProfileRepository profileRepository,IMapper mapper)
     {
         _profileRepository = profileRepository;
+        _mapper = mapper;
     }
+    public async Task<ProfileDto> GetProfileAsync(int id)
+    {
+        var profile = await _profileRepository.GetProfileByIdAsync(id);
+        return _mapper.Map<ProfileDto>(profile);
+    }
+
     public async Task<IEnumerable<ProfileDto>> GetAllProfilesAsync()
     {
-        try
-        {
-            return await _profileRepository.GetAllProfilesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw ;
-        }
+        var profiles = await _profileRepository.GetAllProfilesAsync();
+        return _mapper.Map<IEnumerable<ProfileDto>>(profiles);
     }
 
-    public async Task<ProfileDto> GetProfileByIdAsync(int id)
+    public async Task CreateProfileAsync(ProfileDto profileDto)
     {
-        try
-        {
-            if (id<=0)
-            {
-                throw new ArgumentException("Invalid Pofile Id");
-            }
-
-            return await _profileRepository.GetProfileByIdAsync(id);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        var profiles = _mapper.Map<Profile>(profileDto);
+        await _profileRepository.CreateProfileAsync(profiles);
     }
 
-    public async Task<int> CreateProfileAsync(CreateProfileDto createProfileDto)
+    public async Task UpdateProfileAsync(int id, ProfileDto profileDto)
     {
-        try
+        var existingProfile = await _profileRepository.GetProfileByIdAsync(id);
+        if (existingProfile != null)
         {
-            if (createProfileDto == null)
-            {
-                throw new ArgumentNullException(nameof(UpdateProfileDto),"Profile is Empty");
-            }
-        return    await _profileRepository.CreateProfileAsync(createProfileDto);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-       
-    }
-
-    public Task UpdateProfileAsync(int id, CreateProfileDto updateProfileDto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task UpdateProfileAsync(int id, UpdateProfileDto updateProfileDto)
-    {
-        try
-        {
-            if (id <= 0)
-            {
-                throw new ArgumentException("Invalid Profile ID");
-            }
-
-            if (updateProfileDto == null)
-            {
-                throw new ArgumentException(nameof(updateProfileDto), "Profile is null");
-            }
-
-            await _profileRepository.UpdateProfileAsync(id, updateProfileDto);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            _mapper.Map(profileDto, existingProfile);
+            await _profileRepository.UpdateProfileAsync(existingProfile);
         }
     }
-
     public async Task DeleteProfileAsync(int id)
     {
-        try
-        {
-            if (id <= 0)
-            {
-                throw new ArgumentException("Invalid Profile Id");
-            }
-
-            await _profileRepository.DeleteProfileAsync(id);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await _profileRepository.DeleteProfileAsync(id);
     }
-
- 
 }

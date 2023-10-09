@@ -1,4 +1,5 @@
 using HandySquad.dto.Profile.SkillSet;
+using HandySquad.Global_Exceptions;
 using HandySquad.Models;
 using HandySquad.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,75 +17,51 @@ public class SkillSetController:ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SkillSetDto>>> GetSkillSets()
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<ActionResult<IEnumerable<SkillSetDtoRequest>>> GetSkillSets()
     {
         var skillSet = await _skillSetService.GetAllSkillSetsAsync();
         return Ok(skillSet);
     }
 
     [HttpGet]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
     public async Task<ActionResult<SkillSetDto>> GetSkillSet(int id)
     {
-        var skillSet = await _skillSetService.GetSkillSetByIdAync(id);
-        if (skillSet == null)
+        var skillSetDto = await _skillSetService.GetSkillSetByIdAync(id);
+        if (skillSetDto == null)
         {
             return NotFound();
         }
-
-        return Ok(skillSet);
+        
+        return Ok(skillSetDto);
     }
 
-    
     [HttpPost]
-    public async Task<ActionResult<SkillSetDto>> PostOccupation(SkillSet skillSetDto)
-    {
-        if (skillSetDto == null)
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+        public ActionResult<SkillSetDto> CreateSkillSetAync([FromBody] SkillSetDto skillSetDto)
         {
-            return BadRequest();
+            var createdSkillsetDto = _skillSetService.CreateSkillSetAsync(skillSetDto);
+            return CreatedAtAction("", new { id = createdSkillsetDto.Id }, createdSkillsetDto);
         }
-
-        try
-        {
-            await _skillSetService.CreateSkillSetAsync(skillSetDto);
-            return CreatedAtAction("GetSkillSet", new { id = skillSetDto.Id }, skillSetDto);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-    }
+    
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutSkillSet(int id, SkillSetDto updateSkillSetDto)
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<IActionResult> UpdateSkillSetAysnc(int id, [FromBody] SkillSetDto skillsetDto)
     {
-        if (updateSkillSetDto == null)
-        {
-            return BadRequest();
-        }
-
-        try
-        {
-            await _skillSetService.UpdateSkillSetAync(id, updateSkillSetDto);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
+        var updatedSkillsetDto = _skillSetService.UpdateSkillSetAync(id, skillsetDto);
+        if (updatedSkillsetDto == null)
+            return NotFound();
+        return NoContent();
     }
 
-    // DELETE: api/Occupation/5
+    // DELETE: api/SkillSet/5
     [HttpDelete("{id}")]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
     public async Task<IActionResult> DeleteSkillSet(int id)
     {
-        try
-        {
-            await _skillSetService.DeleteSkillSetAsync(id);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
+        await _skillSetService.DeleteSkillSetAsync(id);
+        return NoContent();
     }
 }

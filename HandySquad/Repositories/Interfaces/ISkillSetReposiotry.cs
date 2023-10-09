@@ -8,6 +8,6 @@ public interface ISkillSetReposiotry
     Task<List<SkillSet>> GetAllSkillSetsAsync();
     Task<SkillSet?> GetSkillSetByIdAync(int id);
     Task CreateSkillSetAsync(SkillSet skillSet);
-    Task UpdateSkillSetAync(int id, SkillSetDto updateSkillSet);
+    Task UpdateSkillSetAync(int id, SkillSet upSkillSet);
     Task DeleteSkillSetAsync(int id);
 }

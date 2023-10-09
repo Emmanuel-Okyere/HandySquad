@@ -4,7 +4,8 @@ namespace HandySquad.Services.Interfaces;
 
 public interface IProfileImageService
 {
-    Task<int> UploadImageAsync(ProfileImageDto profileImageDto);
-    Task UpdateImageAsync(int id, ProfileImageDto profileImageDto);
-    Task<ProfileImageDto> GetImageAsync(int id);
+    Task<ProfileImageDto> GetProfileImageAsync(int id);
+    Task CreateProfileImageAsync(ProfileImageDto profileImageDto);
+    Task UpdateProfileImageAsync(int id, ProfileImageDto profileImageDto);
+    Task DeleteProfileImageAsync(int id);
 }

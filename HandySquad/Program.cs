@@ -1,6 +1,7 @@
 using System.Text;
 using HandySquad.Config;
 using HandySquad.Data;
+using HandySquad.Global_Exceptions;
 using HandySquad.Repositories.Implementations;
 using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Implementations;
@@ -21,12 +22,17 @@ builder.Services.AddDbContext<DataContext>(option =>
 //registery repositories &bservices  
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IProfileImageRepository,IProfileImageRepository>();
+builder.Services.AddScoped<IProfileImageService,ProfileImageService>();
+builder.Services.AddScoped<ISkillSetReposiotry,SkillSetRepository>();
+builder.Services.AddScoped<ISkillSetService,SkillSetService>();
 
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new NotFound404NotFoundException());
     options.Filters.Add(new Duplicate404ConflictException());
     options.Filters.Add(new BadRequest400BadRequestException());
+    options.Filters.Add(typeof(ErrorHandlingAttributes));
 }).AddNewtonsoftJson(option =>
 {
     option.SerializerSettings.Converters.Add(new StringEnumConverter());
@@ -82,10 +88,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+
+//Initialising AutoMapper
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()) 
 {
     app.UseSwagger();
     app.UseSwaggerUI();

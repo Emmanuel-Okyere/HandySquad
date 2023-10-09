@@ -4,10 +4,9 @@ namespace HandySquad.Services.Interfaces;
 
 public interface IProfileService
 {
+    Task<ProfileDto> GetProfileAsync(int id);
     Task<IEnumerable<ProfileDto>> GetAllProfilesAsync();
-    Task<ProfileDto> GetProfileByIdAsync(int id);
-    Task<int> CreateProfileAsync(CreateProfileDto createProfileDto);
-    Task UpdateProfileAsync(int id, UpdateProfileDto updateProfileDto);
+    Task CreateProfileAsync(ProfileDto profileDto);
+    Task UpdateProfileAsync(int id, ProfileDto profileDto);
     Task DeleteProfileAsync(int id);
-   // Task SaveChangesAsync();
 }

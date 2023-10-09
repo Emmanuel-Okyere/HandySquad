@@ -1,10 +1,13 @@
 using HandySquad.dto.Profile;
+using HandySquad.Models;
 
 namespace HandySquad.Repositories.Interfaces;
 
 public interface IProfileImageRepository
 {
-    Task<int> UploadImageAync(ProfileImageDto profileImageDto);
-    Task UploadImageAsync(int id, ProfileImageDto profileImageDto);
-    Task<ProfileImageDto> GetImageAsync(int id);
+    
+    Task<ProfileImage> GetProfileImageByIdAsync(int id);
+    Task CreateProfileImageAsync(ProfileImage profileImage);
+    Task UpdateProfileImageAsync(ProfileImage profileImage);
+    Task DeleteProfileImageAsync(int id);
 }

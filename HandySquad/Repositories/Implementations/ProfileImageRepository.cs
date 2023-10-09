@@ -5,7 +5,7 @@ using HandySquad.Repositories.Interfaces;
 
 namespace HandySquad.Repositories.Implementations;
 
-public class ProfileImageRepository:IProfileImageRepository
+public class ProfileImageRepository : IProfileImageRepository
 {
     private readonly DataContext _dataContext;
 
@@ -13,43 +13,32 @@ public class ProfileImageRepository:IProfileImageRepository
     {
         _dataContext = dataContext;
     }
-    public async Task<int> UploadImageAync(ProfileImageDto profileImageDto)
+
+
+    public async  Task<ProfileImage> GetProfileImageByIdAsync(int id)
     {
-        var image = new ProfileImage
-        {
-            FileName = profileImageDto.FileName,
-            Data = profileImageDto.Data
-        };
-        _dataContext.ProfileImages.Add(image);
-        await _dataContext.SaveChangesAsync();
-        return image.Id;
+        return await _dataContext.ProfileImages.FindAsync(id);
     }
 
-    public async Task UploadImageAsync(int id, ProfileImageDto profileImageDto)
+    public async Task CreateProfileImageAsync(ProfileImage profileImage)
     {
-        var image = await _dataContext.ProfileImages.FindAsync(id);
-        if (image != null)
-        {
-            image.FileName = profileImageDto.FileName;
-            image.Data = profileImageDto.Data;
+        _dataContext.ProfileImages.Add(profileImage);
+        await _dataContext.SaveChangesAsync();
+    }
 
+    public async Task UpdateProfileImageAsync(ProfileImage profileImage)
+    {
+        _dataContext.ProfileImages.Update(profileImage);
+        await _dataContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteProfileImageAsync(int id)
+    {
+        var profileImage = await GetProfileImageByIdAsync(id);
+        if (profileImage != null)
+        {
+            _dataContext.ProfileImages.Remove(profileImage);
             await _dataContext.SaveChangesAsync();
         }
-    }
-
-    public async Task<ProfileImageDto> GetImageAsync(int id)
-    {
-        var image = await _dataContext.ProfileImages.FindAsync(id);
-        if (image != null)
-        {
-            return new ProfileImageDto
-            {
-                Id = image.Id,
-                FileName = image.FileName,
-                Data = image.Data
-            };
-        }
-
-        return null;
     }
 }

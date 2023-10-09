@@ -1,4 +1,5 @@
 using HandySquad.dto.Profile;
+using HandySquad.Global_Exceptions;
 using HandySquad.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,80 +15,45 @@ public class ProfileController:ControllerBase
    {
       _profileService = profileService;
    }
-
-   [HttpGet]
-   public async Task<IActionResult> GetAllProfiles()
+   [HttpGet("{id}")]
+   [ServiceFilter(typeof(ErrorHandlingAttributes))]
+   public async Task<ActionResult<ProfileDto>> GetProfile(int id)
    {
-      try
-      {
-         var profiles = await _profileService.GetAllProfilesAsync();
-         return Ok(profiles);
-      }
-      catch (Exception ex)
-      {
-         return StatusCode(500, "Internal Server Error");
-      }
+      var profile = await _profileService.GetProfileAsync(id);
+      if (profile == null)
+         return NotFound();
+      return Ok(profile);
    }
 
-   [HttpGet("{id}")]
-   public async Task<IActionResult> GetProfileById(int id)
+   [HttpGet]
+   [ServiceFilter(typeof(ErrorHandlingAttributes))]
+   public async Task<ActionResult<IEnumerable<ProfileDto>>> GetAllProfiles()
    {
-      try
-      {
-         var profile = await _profileService.GetProfileByIdAsync(id);
-         if (profile == null)
-         {
-            return NotFound();
-         }
-
-         return Ok(profile);
-      }
-      catch (Exception ex)
-      {
-         return StatusCode(500, "Internet Server Error");
-      }
+      var profiles = await _profileService.GetAllProfilesAsync();
+      return Ok(profiles);
    }
 
    [HttpPost]
-   public async Task<IActionResult> CreateProfile([FromBody] CreateProfileDto createProfileDto)
+   [ServiceFilter(typeof(ErrorHandlingAttributes))]
+   public async Task<IActionResult> CreateProfile(ProfileDto profileDto)
    {
-      try
-      {
-         var id = await _profileService.CreateProfileAsync(createProfileDto);
-         return CreatedAtAction(nameof(GetProfileById), new { id }, null);
-      }
-      catch (Exception e)
-      {
-         return StatusCode(500, "Internal Server Error");
-      }
+      await _profileService.CreateProfileAsync(profileDto);
+      return CreatedAtAction(nameof(GetProfile), new { id = profileDto.Id }, profileDto);
    }
 
    [HttpPut("{id}")]
-   public async Task<IActionResult> UpdateProfile(int id, [FromBody] UpdateProfileDto updateProfileDto)
+   [ServiceFilter(typeof(ErrorHandlingAttributes))]
+   public async Task<IActionResult> UpdateProfile(int id, ProfileDto profileDto)
    {
-      try
-      {
-         await _profileService.UpdateProfileAsync(id, updateProfileDto);
-         return NoContent();
-      }
-      catch (Exception )
-      {
-         return StatusCode(500, "Internal Server Error");
-         throw;
-      }
+      await _profileService.UpdateProfileAsync(id, profileDto);
+      return NoContent();
    }
 
-   [HttpDelete]
+   [HttpDelete("{id}")]
+   [ServiceFilter(typeof(ErrorHandlingAttributes))]
    public async Task<IActionResult> DeleteProfile(int id)
    {
-      try
-      {
-         await _profileService.DeleteProfileAsync(id);
-         return NoContent();
-      }
-      catch (Exception e)
-      {
-         return StatusCode(500, "Internal Server Error");
-      }
+      await _profileService.DeleteProfileAsync(id);
+      return NoContent();
    }
 }

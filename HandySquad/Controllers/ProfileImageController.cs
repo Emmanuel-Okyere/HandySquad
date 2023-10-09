@@ -1,13 +1,14 @@
 using HandySquad.dto.Profile;
+using HandySquad.Global_Exceptions;
 using HandySquad.Repositories.Implementations;
 using HandySquad.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HandySquad.Controllers;
 
-[Route("api/images")]
+[Route("api/profileimages")]
 [ApiController]
-public class ProfileImageController:ControllerBase
+public class ProfileImageController : ControllerBase
 {
     private readonly ProfileImageService _profileImageService;
 
@@ -16,31 +17,36 @@ public class ProfileImageController:ControllerBase
         _profileImageService = profileImageService;
     }
 
-    [HttpPost]
-    [Route("upload")]
-    public async Task<ActionResult<int>> UploadImage([FromBody] ProfileImageDto profileImageDto)
+    [HttpGet("{id}")]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<ActionResult<ProfileImageDto>> GetProfileImage(int id)
     {
-        var imageId = await _profileImageService.UploadImageAsync(profileImageDto);
-        return Ok(imageId);
-    }
-
-    [HttpPut]
-    [Route("update/{id}")]
-    public async Task<IActionResult> UpdateImage(int id, [FromBody] ProfileImageDto profileImageDto)
-    {
-        await _profileImageService.UpdateImageAsync(id, profileImageDto);
-        return Ok();
-    }
-    [HttpGet]
-    [Route("{id}")]
-    public async Task<ActionResult<ProfileImageDto>> GetImage(int id)
-    {
-        var profileImageDto = await _profileImageService.GetImageAsync(id);
-        if (profileImageDto == null)
-        {
+        var profileImage = await _profileImageService.GetProfileImageAsync(id);
+        if (profileImage == null)
             return NotFound();
-        }
+        return Ok(profileImage);
+    }
 
-        return Ok(profileImageDto);
+    [HttpPost]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<IActionResult> CreateProfileImage(ProfileImageDto profileImageDto)
+    {
+        await _profileImageService.CreateProfileImageAsync(profileImageDto);
+        return CreatedAtAction(nameof(GetProfileImage), new { id = profileImageDto.Id }, profileImageDto);
+    }
+
+    [HttpPut("{id}")]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<IActionResult> UpdateProfileImage(int id, ProfileImageDto profileImageDto)
+    {
+        await _profileImageService.UpdateProfileImageAsync(id, profileImageDto);
+        return NoContent();
+    }
+    [HttpDelete("{id}")]
+    [ServiceFilter(typeof(ErrorHandlingAttributes))]
+    public async Task<IActionResult> DeleteProfileImage(int id)
+    {
+        await _profileImageService.DeleteProfileImageAsync(id);
+        return NoContent();
     }
 }

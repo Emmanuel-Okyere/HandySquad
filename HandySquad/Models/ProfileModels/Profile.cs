@@ -14,7 +14,9 @@ public class Profile
     [Required]
     public string Occupation { get; set; }
     [Required]
-    public List<SkillSet> SkillSets {get;set;}
+    public List<SkillSet> SkillSets {get;set;}/// <summary>
+                                              /// Naviagation containign dependeant(child)
+                                              /// </summary>
     [Required]
     public string Location { get; set; }
     [Required]
@@ -29,4 +31,6 @@ public class Profile
     public User User { get; set; }
   
    // public List<Occupation> Occupations { get; set; }
+   // Navigation property to the related ProfileImage
+   public ProfileImage ProfileImage { get; set; }
 }

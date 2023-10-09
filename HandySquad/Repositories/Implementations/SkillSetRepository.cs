@@ -25,31 +25,35 @@ public class SkillSetRepository:ISkillSetReposiotry
         return await _dataContext.SkillSets.FindAsync(id);
     }
 
-    public async Task CreateSkillSetAsync(SkillSet skillSetDto)
+    public async Task CreateSkillSetAsync(SkillSet skillSet)
     {
-        if (skillSetDto == null)
+        if (skillSet == null)
         {
-            throw new ArgumentNullException(nameof(skillSetDto));
+            throw new ArgumentNullException(nameof(skillSet));
         }
 
-        _dataContext.SkillSets.Add(skillSetDto);
+        _dataContext.SkillSets.Add(skillSet);
          await _dataContext.SaveChangesAsync();
     }
 
-    public async  Task UpdateSkillSetAync(int id, SkillSetDto updateSkillSetDto)
+    public async  Task UpdateSkillSetAync(int id, SkillSet updatSkillSet)
     {
         var skillSet = await _dataContext.SkillSets.FindAsync(id);
-        if (skillSet == null)
-        {
-            throw new Exception($"Skillset with {id} not Found");
-        }
-        skillSet.Skills = updateSkillSetDto.Skills;
+        //exception handling here
+        // if (skillSet == null)
+        // {
+        //     throw new Exception($"Skillset with {id} not Found");
+        // }
+         // skillSet.Skills = updateSkillSetDtoRequest.Skills;
+         skillSet.Skills = updatSkillSet.Skills;
+        
         await _dataContext.SaveChangesAsync();
     }
 
     public async  Task DeleteSkillSetAsync(int id)
     {
         var skillSet = await _dataContext.SkillSets.FindAsync(id);
+        ///exception to be handled priperly
         if (skillSet == null)
         {
             throw new Exception($"Skillset with {id} not Found");
