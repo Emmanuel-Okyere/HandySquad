@@ -26,5 +26,6 @@ public class User
     [JsonIgnore]
     public DateTime? UpdatedAt { get; set; } = null;
     
-    
+    public int ProfileId { get; set; }
+    public Profile Profile { get; set; }
 }

@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using HandySquad.dto.Profile.Occupation;
+using HandySquad.dto.Profile.SkillSet;
 using HandySquad.Models;
 
 namespace HandySquad.dto.Profile;
@@ -11,9 +13,9 @@ public class ProfileDto
         [Required]
         public string FullName { get; set; }
         [Required]
-        public string Occupation { get; set; }
+        public List<OccupationDto> Occupation {get;set;}
         [Required]
-        public string  SkillSet {get;set;}
+        public List<SkillSetDto> SkillSets {get;set;}
         [Required]
         public string Location { get; set; }
         [Required]

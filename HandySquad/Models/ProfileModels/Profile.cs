@@ -14,7 +14,7 @@ public class Profile
     [Required]
     public string Occupation { get; set; }
     [Required]
-    public string  SkillSet {get;set;}
+    public List<SkillSet> SkillSets {get;set;}
     [Required]
     public string Location { get; set; }
     [Required]
@@ -26,5 +26,7 @@ public class Profile
     [JsonIgnore]
     public DateTime UpdatedAt { get; set; }
     [JsonIgnore]
-    public User user { get; set; }
+    public User User { get; set; }
+  
+   // public List<Occupation> Occupations { get; set; }
 }
