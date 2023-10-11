@@ -31,7 +31,8 @@ public class ProfileService:IProfileService
     public async Task CreateProfileAsync(ProfileDto profileDto)
     {
         var profiles = _mapper.Map<Profile>(profileDto);
-        await _profileRepository.CreateProfileAsync(profiles);
+        //to fix error
+       // await _profileRepository.CreateProfileAsync(profiles);
     }
 
     public async Task UpdateProfileAsync(int id, ProfileDto profileDto)
