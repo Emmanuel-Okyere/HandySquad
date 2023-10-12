@@ -5,7 +5,7 @@ using HandySquad.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HandySquad.Controllers;
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class SkillSetController:ControllerBase
 {
@@ -24,7 +24,7 @@ public class SkillSetController:ControllerBase
         return Ok(skillSet);
     }
 
-    [HttpGet]
+    [HttpGet("{id:int}")]
     [ServiceFilter(typeof(ErrorHandlingAttributes))]
     public async Task<ActionResult<SkillSetDto>> GetSkillSet(int id)
     {

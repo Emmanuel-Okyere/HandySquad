@@ -3,16 +3,17 @@ using HandySquad.dto.Profile;
 using HandySquad.Models;
 using HandySquad.Models.ProfileModels;
 using HandySquad.Repositories.Implementations;
+using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Interfaces;
 
 namespace HandySquad.Services.Implementations;
 
 public class ProfileImageService:IProfileImageService
 {
-    private readonly ProfileImageRepository _profileImageRepository;
+    private readonly IProfileImageRepository _profileImageRepository;
     private readonly IMapper _mapper;
 
-    public ProfileImageService(ProfileImageRepository profileImageRepository,IMapper mapper)
+    public ProfileImageService(IProfileImageRepository profileImageRepository,IMapper mapper)
     {
         _profileImageRepository = profileImageRepository;
         _mapper = mapper;

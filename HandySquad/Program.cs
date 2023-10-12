@@ -20,12 +20,12 @@ builder.Services.AddDbContext<DataContext>(option =>
     option.UseNpgsql(builder.Configuration.GetConnectionString("connection")));
 //option.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
 //registery repositories &bservices  
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<IProfileImageRepository,IProfileImageRepository>();
-builder.Services.AddScoped<IProfileImageService,ProfileImageService>();
-builder.Services.AddScoped<ISkillSetReposiotry,SkillSetRepository>();
-builder.Services.AddScoped<ISkillSetService,SkillSetService>();
+builder.Services.AddTransient<IProfileRepository, ProfileRepository>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
+builder.Services.AddTransient<IProfileImageRepository,ProfileImageRepository>();
+builder.Services.AddTransient<IProfileImageService,ProfileImageService>();
+builder.Services.AddTransient<ISkillSetReposiotry,SkillSetRepository>();
+builder.Services.AddTransient<ISkillSetService,SkillSetService>();
 
 builder.Services.AddControllers(options =>
 {

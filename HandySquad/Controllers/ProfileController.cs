@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HandySquad.Controllers;
 
 [ApiController]
-[Route("api/profiles")]
+[Route("api/v1/[controller]")]
 public class ProfileController:ControllerBase
 {
    private readonly IProfileService _profileService;
@@ -33,13 +33,14 @@ public class ProfileController:ControllerBase
       return Ok(profiles);
    }
 
-   [HttpPost]
-   [ServiceFilter(typeof(ErrorHandlingAttributes))]
-   public async Task<IActionResult> CreateProfile(ProfileDto profileDto)
-   {
-      await _profileService.CreateProfileAsync(profileDto);
-      return CreatedAtAction(nameof(GetProfile), new { id = profileDto.Id }, profileDto);
-   }
+   // [HttpPost]
+   // [ServiceFilter(typeof(ErrorHandlingAttributes))]
+   //
+   // public async Task<IActionResult> CreateProfile(ProfileDto profileDto)
+   // {
+   //    await _profileService.CreateProfileAsync(profileDto);
+   //    return CreatedAtAction(nameof(GetProfile), new { id = profileDto.Id }, profileDto);
+   // }
 
    [HttpPut("{id}")]
    [ServiceFilter(typeof(ErrorHandlingAttributes))]

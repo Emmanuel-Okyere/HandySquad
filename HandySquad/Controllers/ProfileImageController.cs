@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HandySquad.Controllers;
 
-[Route("api/profileimages")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class ProfileImageController : ControllerBase
 {
