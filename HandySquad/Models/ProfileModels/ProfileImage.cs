@@ -1,4 +1,4 @@
-namespace HandySquad.Models;
+namespace HandySquad.Models.ProfileModels;
 
 public class ProfileImage
 {

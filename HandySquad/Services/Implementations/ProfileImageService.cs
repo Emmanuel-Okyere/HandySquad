@@ -1,6 +1,7 @@
 using AutoMapper;
 using HandySquad.dto.Profile;
 using HandySquad.Models;
+using HandySquad.Models.ProfileModels;
 using HandySquad.Repositories.Implementations;
 using HandySquad.Services.Interfaces;
 

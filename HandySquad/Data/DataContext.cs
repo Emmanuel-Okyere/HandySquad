@@ -1,4 +1,5 @@
 using HandySquad.Models;
+using HandySquad.Models.ProfileModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace HandySquad.Data;

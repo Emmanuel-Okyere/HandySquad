@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HandySquad.Enum;
+using HandySquad.Models.ProfileModels;
 using Newtonsoft.Json;
 
 namespace HandySquad.Models;

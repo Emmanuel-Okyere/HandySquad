@@ -3,7 +3,7 @@ using HandySquad.Data;
 using HandySquad.dto.Profile;
 using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Interfaces;
-using Profile = HandySquad.Models.Profile;
+using Profile = HandySquad.Models.ProfileModels.Profile;
 
 namespace HandySquad.Services.Implementations;
 

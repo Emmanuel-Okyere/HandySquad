@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace HandySquad.Models;
+namespace HandySquad.Models.ProfileModels;
 
 public class Profile
 {

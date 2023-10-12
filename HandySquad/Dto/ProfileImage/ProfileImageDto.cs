@@ -1,4 +1,4 @@
-namespace HandySquad.dto.Profile;
+namespace HandySquad.Dto.ProfileImage;
 
 public class ProfileImageDto
 {

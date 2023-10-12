@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HandySquad.Models.ProfileModels;
 
 namespace HandySquad.Models;
 

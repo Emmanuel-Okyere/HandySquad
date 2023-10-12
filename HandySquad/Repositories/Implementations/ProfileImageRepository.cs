@@ -1,6 +1,7 @@
 using HandySquad.Data;
 using HandySquad.dto.Profile;
 using HandySquad.Models;
+using HandySquad.Models.ProfileModels;
 using HandySquad.Repositories.Interfaces;
 
 namespace HandySquad.Repositories.Implementations;
