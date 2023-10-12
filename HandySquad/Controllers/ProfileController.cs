@@ -33,15 +33,6 @@ public class ProfileController:ControllerBase
       return Ok(profiles);
    }
 
-   // [HttpPost]
-   // [ServiceFilter(typeof(ErrorHandlingAttributes))]
-   //
-   // public async Task<IActionResult> CreateProfile(ProfileDto profileDto)
-   // {
-   //    await _profileService.CreateProfileAsync(profileDto);
-   //    return CreatedAtAction(nameof(GetProfile), new { id = profileDto.Id }, profileDto);
-   // }
-
    [HttpPut("{id}")]
    [ServiceFilter(typeof(ErrorHandlingAttributes))]
    public async Task<IActionResult> UpdateProfile(int id, ProfileDto profileDto)
