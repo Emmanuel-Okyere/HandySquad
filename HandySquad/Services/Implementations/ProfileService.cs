@@ -3,6 +3,7 @@ using HandySquad.Data;
 using HandySquad.dto.Profile;
 using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Interfaces;
+using Profile = HandySquad.Models.Profile;
 
 namespace HandySquad.Services.Implementations;
 
@@ -28,11 +29,11 @@ public class ProfileService:IProfileService
         return _mapper.Map<IEnumerable<ProfileDto>>(profiles);
     }
 
-    public async Task CreateProfileAsync(ProfileDto profileDto)
+    public  async Task CreateProfileAsync(ProfileDto profileDto)
     {
-        var profiles = _mapper.Map<Profile>(profileDto);
-        //to fix error
-       // await _profileRepository.CreateProfileAsync(profiles);
+        var profile = _mapper.Map<Profile>(profileDto);
+        
+        await _profileRepository.CreateProfileAsync(profile);
     }
 
     public async Task UpdateProfileAsync(int id, ProfileDto profileDto)

@@ -8,6 +8,7 @@ public class ErrorHandlingAttributes : ExceptionFilterAttribute
     
     public override void OnException(ExceptionContext context)
     {
+        //violated srp
         if (context.Exception is NotFoundException)
         {
             context.Result = new NotFoundObjectResult(new
