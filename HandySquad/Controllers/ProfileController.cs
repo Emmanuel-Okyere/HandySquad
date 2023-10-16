@@ -1,12 +1,16 @@
+using System.Security.Claims;
+using HandySquad.dto;
 using HandySquad.dto.Profile;
 using HandySquad.Global_Exceptions;
 using HandySquad.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HandySquad.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
+[Authorize]
 public class ProfileController:ControllerBase
 {
    private readonly IProfileService _profileService;
@@ -26,11 +30,12 @@ public class ProfileController:ControllerBase
    }
 
    [HttpGet]
-   [ServiceFilter(typeof(ErrorHandlingAttributes))]
-   public async Task<ActionResult<IEnumerable<ProfileDto>>> GetAllProfiles()
+   [ProducesResponseType(StatusCodes.Status200OK)]
+   [ProducesResponseType(StatusCodes.Status404NotFound)]
+   [ProducesResponseType(StatusCodes.Status400BadRequest)]
+   public async Task<ActionResult> GetUserProfile([FromHeader(Name = "Authorization")] string authorizationHeader)
    {
-      var profiles = await _profileService.GetAllProfilesAsync();
-      return Ok(profiles);
+      return Ok(await _profileService.GetCurrentUserProfile(authorizationHeader));
    }
 
    [HttpPut("{id}")]
@@ -47,5 +52,15 @@ public class ProfileController:ControllerBase
    {
       await _profileService.DeleteProfileAsync(id);
       return NoContent();
+   }
+
+   [HttpPatch("{id:int}/rate")]
+   [ProducesResponseType(StatusCodes.Status200OK)]
+   [ProducesResponseType(StatusCodes.Status404NotFound)]
+   [ProducesResponseType(StatusCodes.Status400BadRequest)]
+   public async Task<IActionResult> RateAUserProfile([FromRoute]int id, [FromBody] RatingRequestDto rating
+      ,[FromHeader(Name = "Authorization")] string authorizationHeader )
+   {
+      return Ok(await _profileService.RateAUserProfile(id, rating, authorizationHeader));
    }
 }

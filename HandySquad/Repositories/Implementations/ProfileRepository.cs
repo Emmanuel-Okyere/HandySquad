@@ -16,9 +16,20 @@ public class ProfileRepository : IProfileRepository
         _dataContext = dataContext;
     }
 
-    public async Task<Profile> GetProfileByIdAsync(int id)
+    public async Task<Profile?> GetProfileByIdAsync(int id)
     {
-        return await _dataContext.Profiles.FindAsync(id);
+        return await _dataContext
+            .Profiles
+            .Include(a=>a.ProfileImage)
+            .FirstOrDefaultAsync(a=>a.Id==id);
+    }
+
+    public async Task<Profile?> GetByUserId(int id)
+    {
+        return await _dataContext.
+            Profiles
+            .Include(a=>a.ProfileImage)
+            .FirstOrDefaultAsync(a => a.User.Id == id);
     }
 
     public async Task<IEnumerable<Profile>> GetAllProfilesAsync()
@@ -47,5 +58,10 @@ public class ProfileRepository : IProfileRepository
             _dataContext.Profiles.Remove(profile);
             await _dataContext.SaveChangesAsync();
         }
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _dataContext.SaveChangesAsync();
     }
 }
