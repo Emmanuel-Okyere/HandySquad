@@ -26,10 +26,11 @@ public class ProfileRepository : IProfileRepository
         return await _dataContext.Profiles.ToListAsync();
     }
 
-    public async Task CreateProfileAsync(Profile profile)
+    public async Task<Profile> CreateProfileAsync(Profile profile)
     {
-        _dataContext.Profiles.Add(profile);
+        var userProfile =await _dataContext.Profiles.AddAsync(profile);
         await _dataContext.SaveChangesAsync();
+        return userProfile.Entity;
     }
 
     public async Task UpdateProfileAsync(Profile profile)

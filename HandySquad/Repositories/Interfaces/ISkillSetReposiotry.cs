@@ -5,9 +5,9 @@ namespace HandySquad.Repositories.Interfaces;
 
 public interface ISkillSetReposiotry
 {
-    Task<List<SkillSet>> GetAllSkillSetsAsync();
-    Task<SkillSet?> GetSkillSetByIdAync(int id);
-    Task CreateSkillSetAsync(SkillSet skillSet);
-    Task UpdateSkillSetAync(int id, SkillSet upSkillSet);
+    Task<List<Skill>> GetAllSkillSetsAsync();
+    Task<Skill?> GetSkillSetByIdAync(int id);
+    Task CreateSkillSetAsync(Skill skill);
+    Task UpdateSkillSetAync(int id, Skill upSkill);
     Task DeleteSkillSetAsync(int id);
 }

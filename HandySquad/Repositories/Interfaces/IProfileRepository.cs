@@ -8,7 +8,7 @@ public interface IProfileRepository
 {
     Task<Profile> GetProfileByIdAsync(int id);
     Task<IEnumerable<Profile>> GetAllProfilesAsync();
-    Task CreateProfileAsync(Profile profile);
+    Task<Profile> CreateProfileAsync(Profile profile);
     Task UpdateProfileAsync(Profile profile);
     Task DeleteProfileAsync(int id);
 }

@@ -68,7 +68,7 @@ public class SkillSetService:ISkillSetService
 
     public  Task<SkillSetDto> CreateSkillSetAsync(SkillSetDto skillSetDto)
     {
-        var skillSet =  _mapper.Map<SkillSet>(skillSetDto);
+        var skillSet =  _mapper.Map<Skill>(skillSetDto);
         
        return   (Task<SkillSetDto>)_skillSetReposiotry.CreateSkillSetAsync(skillSet);
           

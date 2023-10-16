@@ -29,11 +29,11 @@ public class ProfileService:IProfileService
         return _mapper.Map<IEnumerable<ProfileDto>>(profiles);
     }
 
-    public  async Task CreateProfileAsync(ProfileDto profileDto)
+    public  async Task<Profile> CreateProfileAsync(ProfileDto profileDto)
     {
         var profile = _mapper.Map<Profile>(profileDto);
         
-        await _profileRepository.CreateProfileAsync(profile);
+        return await _profileRepository.CreateProfileAsync(profile);
     }
 
     public async Task UpdateProfileAsync(int id, ProfileDto profileDto)

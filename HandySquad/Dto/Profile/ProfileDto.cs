@@ -15,7 +15,7 @@ public class ProfileDto
   
         public string  Occupation {get;set;}
         
-        public List<Models.SkillSet> SkillSets {get;set;}
+        public List<Models.Skill> SkillSets {get;set;}
       
         public string Location { get; set; }
         

@@ -4,6 +4,7 @@ using System.Text;
 using HandySquad.dto;
 using HandySquad.Exceptions;
 using HandySquad.Models;
+using HandySquad.Models.ProfileModels;
 using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -15,12 +16,14 @@ public class AuthenticationService: IAuthenticationService, IJwtService
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthenticationService> _logger;
+    private readonly IProfileRepository _profileRepository;
 
-    public AuthenticationService(IUserRepository userRepository, IConfiguration configuration, ILogger<AuthenticationService> logger)
+    public AuthenticationService(IUserRepository userRepository, IConfiguration configuration, ILogger<AuthenticationService> logger, IProfileRepository profileRepository)
     {
         _userRepository = userRepository;
         _configuration = configuration;
         _logger = logger;
+        _profileRepository = profileRepository;
     }
 
     public async Task<UserResponseDto> Register(RegisterRequestDto registerRequestDto)
@@ -45,6 +48,12 @@ public class AuthenticationService: IAuthenticationService, IJwtService
        var addedUser = await _userRepository.AddUser(newUser);
        var token = CreateToken(registerRequestDto.EmailAddress);
        _logger.LogInformation("Registration for {} completed",registerRequestDto.EmailAddress);
+       _logger.LogInformation("Creating user profile for user with id {}", addedUser.Id);
+       var newProfile = new Profile
+       {
+           User = addedUser
+       };
+       await _profileRepository.CreateProfileAsync(newProfile);
        return new UserResponseDto
        {
            Status = "success",
