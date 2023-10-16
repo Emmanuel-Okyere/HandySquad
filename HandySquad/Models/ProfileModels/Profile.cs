@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace HandySquad.Models.ProfileModels;
 
 public class Profile
 {
+    [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Key]
     public int UserId { get; set; }
     [Required]
     public string FullName { get; set; }

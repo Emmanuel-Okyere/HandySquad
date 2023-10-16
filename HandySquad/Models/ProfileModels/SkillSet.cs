@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using HandySquad.Models.ProfileModels;
 
 namespace HandySquad.Models;
 
 public class SkillSet
 {
-    [Key]
+    [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Skills { get; set; }
     public int ProfileId { get; set; }// foreign key property
