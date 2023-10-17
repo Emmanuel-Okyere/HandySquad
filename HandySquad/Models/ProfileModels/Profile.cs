@@ -11,8 +11,11 @@ public class Profile
     public string? Occupation { get; set; }
     public List<Skill> SkillSets {get;set;}
     public string? Location { get; set; }
-    public int Ratings { get; set; }
-    public int NumberOfRatings { get; set; }
+    public double TotalRatings { get; set; }
+    public int NumberOfUserThatHasRated { get; set; }
+    [NotMapped]
+    public double Rating => TotalRatings/NumberOfUserThatHasRated;
+
     [JsonIgnore]
     public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
     [JsonIgnore]

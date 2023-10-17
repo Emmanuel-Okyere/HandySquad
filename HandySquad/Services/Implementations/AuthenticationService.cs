@@ -1,4 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using HandySquad.dto;
@@ -48,12 +50,13 @@ public class AuthenticationService: IAuthenticationService, IJwtService
        var addedUser = await _userRepository.AddUser(newUser);
        var token = CreateToken(registerRequestDto.EmailAddress);
        _logger.LogInformation("Registration for {} completed",registerRequestDto.EmailAddress);
-       _logger.LogInformation("Creating user profile for user with id {}", addedUser.Id);
+       _logger.LogInformation("Creating user profile for user with id {} initiated", addedUser.Id);
        var newProfile = new Profile
        {
            User = addedUser
        };
        await _profileRepository.CreateProfileAsync(newProfile);
+       _logger.LogInformation("Creating user profile for user with id {} completed", addedUser.Id);
        return new UserResponseDto
        {
            Status = "success",
@@ -112,6 +115,26 @@ public class AuthenticationService: IAuthenticationService, IJwtService
         passwordSalt = hmac.Key;
         passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
         _logger.LogInformation("creating password hash and salt completed");
+    }
+
+    public async Task<User?> GetUserFromHeader(string authorizationHeader)
+    {
+        if (authorizationHeader.IsNullOrEmpty() || !authorizationHeader.StartsWith("Bearer "))
+        {
+            throw new BadRequest400Exception("authorization not found in header");
+        }
+        var token = authorizationHeader["Bearer ".Length..];
+        var tokenHandler = new JwtSecurityTokenHandler();
+        if (!tokenHandler.ReadJwtToken(token).Payload.TryGetValue("email", out var userEmail))
+        {
+            throw new BadRequest400Exception("authorization not found in header");
+        }
+        var user = await _userRepository.GetUserByEmailAddress(userEmail.ToString());
+        if (user == null)
+        {
+            throw new BadRequest400Exception("user not found in header");
+        }
+        return user;
     }
 
     public string CreateToken(string emailAddress)

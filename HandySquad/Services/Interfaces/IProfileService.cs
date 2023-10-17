@@ -1,3 +1,4 @@
+using HandySquad.dto;
 using HandySquad.dto.Profile;
 using HandySquad.Models.ProfileModels;
 
@@ -10,4 +11,6 @@ public interface IProfileService
     Task<Profile> CreateProfileAsync(ProfileDto profileDto);
     Task UpdateProfileAsync(int id, ProfileDto profileDto);
     Task DeleteProfileAsync(int id);
+    Task<MessageResponseDto> RateAUserProfile(int profileId, RatingRequestDto rating, string authorizationHeader);
+    Task<Profile?> GetCurrentUserProfile(string authorizationHeader);
 }
