@@ -17,48 +17,13 @@ public class SkillSetService:ISkillSetService
         _mapper = mapper;
     }
     
-    // public async Task<List<SkillSet>> GetAllSkillSetsAsync()
-    // {
-    //     return await _skillSetReposiotry.GetAllSkillSetsAsync();
-    // }
-    //
-    // public async Task<SkillSet?> GetSkillSetByIdAync(int id)
-    // {
-    //     return await _skillSetReposiotry.GetSkillSetByIdAync(id);
-    // }
-    //
-    // public async Task CreateSkillSetAsync(SkillSet skillSetDto)
-    // {
-    //     if (skillSetDto == null)
-    //     {
-    //         throw new ArgumentNullException(nameof(skillSetDto));
-    //     }
-    //      await _skillSetReposiotry.CreateSkillSetAsync(skillSetDto);
-    // }
-    //
-    // public async  Task UpdateSkillSetAync(int id, SkillSetDtoRequest updateSkillSet)
-    // {
-    //     if (updateSkillSet == null)
-    //     {
-    //         throw new ArgumentNullException(nameof(updateSkillSet));
-    //     }
-    //
-    //     await _skillSetReposiotry.UpdateSkillSetAync(id, updateSkillSet);
-    // }
-    //
-    //
-    //
-    // public async Task DeleteSkillSetAsync(int id)
-    // {
-    //     await _skillSetReposiotry.DeleteSkillSetAsync(id);
-    // }
-
-
-    public async  Task<List<SkillSetDto>> GetAllSkillSetsAsync()
+    public async  Task<IEnumerable<SkillSetDto>> GetAllSkillSetsAsync()
     {
         var skillsets = _skillSetReposiotry.GetAllSkillSetsAsync();
         return await _mapper.Map<Task<List<SkillSetDto>>>(skillsets);
     }
+
+    //to make adjustment here
 
     public async Task<SkillSetDto?> GetSkillSetByIdAync(int id)
     {

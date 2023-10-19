@@ -1,8 +1,8 @@
 using HandySquad.dto.Profile.SkillSet;
 using HandySquad.Global_Exceptions;
-using HandySquad.Models;
 using HandySquad.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace HandySquad.Controllers;
 [Route("api/v1/[controller]")]

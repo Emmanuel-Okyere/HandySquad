@@ -2,6 +2,7 @@ using System.Security.Claims;
 using HandySquad.dto;
 using HandySquad.dto.Profile;
 using HandySquad.Global_Exceptions;
+using HandySquad.Pagination;
 using HandySquad.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,15 @@ public class ProfileController:ControllerBase
    {
       await _profileService.DeleteProfileAsync(id);
       return NoContent();
+   }
+   [HttpGet("search")]
+   [ProducesResponseType(StatusCodes.Status200OK)]
+   [ProducesResponseType(StatusCodes.Status404NotFound)]
+   [ProducesResponseType(StatusCodes.Status400BadRequest)]
+   public async Task<ActionResult<PaginatedResultDto<ProfileDto>>> SearchProfiles([FromQuery] ProfileSearchParameters profileSearch,[FromQuery] int page=1,[FromQuery] int pageSize =10)
+   {
+      var result = await _profileService.SearchProfilesAsync(profileSearch,page,pageSize);
+      return Ok(result);
    }
 
    [HttpPatch("{id:int}/rate")]

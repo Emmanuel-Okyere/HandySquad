@@ -15,9 +15,18 @@ public class SkillSetRepository:ISkillSetReposiotry
         _dataContext = dataContext;
     }
 
-    public async Task<List<Skill>> GetAllSkillSetsAsync()
+    public async Task<List<Skill>> GetAllSkillSetsAsync( )
     {
-        return await _dataContext.SkillSets.ToListAsync();
+       return await _dataContext.SkillSets
+           .OrderBy(s=>s.Name)
+           // .Skip((skillsParameters.PageNumber-1)*skillsParameters.PageSize)
+           // .Take(skillsParameters.PageSize)
+           .ToListAsync();
+       // List<Skill> skills = await _dataContext.SkillSets.OrderBy(s=>s.Name)
+       //     .ToListAsync();
+       // return PagedList<List<Skill>>
+       //     .ToPagedList(skills, skillsParameters.PageNumber, skillsParameters.PageSize);
+
     }
 
     public async Task<Skill?> GetSkillSetByIdAync(int id)
