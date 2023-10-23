@@ -23,7 +23,7 @@ public class SkillSetService:ISkillSetService
         return await _mapper.Map<Task<List<SkillSetDto>>>(skillsets);
     }
 
-    //to make adjustment here
+    
 
     public async Task<SkillSetDto?> GetSkillSetByIdAync(int id)
     {
