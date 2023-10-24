@@ -1,6 +1,7 @@
 using HandySquad.dto.Profile.SkillSet;
 using HandySquad.Models;
 
+
 namespace HandySquad.Repositories.Interfaces;
 
 public interface ISkillSetReposiotry

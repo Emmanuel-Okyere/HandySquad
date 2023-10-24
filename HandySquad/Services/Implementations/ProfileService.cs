@@ -3,6 +3,7 @@ using HandySquad.Data;
 using HandySquad.dto;
 using HandySquad.dto.Profile;
 using HandySquad.Exceptions;
+using HandySquad.Pagination;
 using HandySquad.Repositories.Interfaces;
 using HandySquad.Services.Interfaces;
 using Profile = HandySquad.Models.ProfileModels.Profile;
@@ -31,6 +32,22 @@ public class ProfileService:IProfileService
     {
         var profiles = await _profileRepository.GetAllProfilesAsync();
         return _mapper.Map<IEnumerable<ProfileDto>>(profiles);
+    }
+
+
+    public async Task<PaginatedResultDto<ProfileDto>> SearchProfilesAsync(ProfileSearchParameters profileSearchParameters, int page, int pageSize)
+    {
+        var profiles = await _profileRepository.SearchProfilesAsync(profileSearchParameters, page, pageSize);
+        var totalProfileCount = await _profileRepository.GetTotalProfileCountAsync(profileSearchParameters);
+        var profileDtos = _mapper.Map<IEnumerable<ProfileDto>>(profiles);
+
+        return new PaginatedResultDto<ProfileDto>
+        {
+            Data = profileDtos,
+            TotalCount = totalProfileCount,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
     public  async Task<Profile> CreateProfileAsync(ProfileDto profileDto)
