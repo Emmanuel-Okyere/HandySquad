@@ -14,6 +14,7 @@ public class DataContext : DbContext
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Skill> SkillSets { get; set; }
     public DbSet<ProfileImage> ProfileImages { get; set; }
+    public DbSet<Deal> Deals { get; set; }
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
     }
@@ -30,6 +31,15 @@ public class DataContext : DbContext
             .HasOne(p => p.ProfileImage)
             .WithOne(pi => pi.Profile)
             .HasForeignKey<ProfileImage>(pi => pi.Id);
+
+        modelBuilder.Entity<Deal>()
+            .HasOne(d => d.Artisan)
+            .WithMany()
+            .HasForeignKey(d=>d.ArtisanId);
+        modelBuilder.Entity<Deal>()
+            .HasOne(d => d.Client)
+            .WithMany()
+            .HasForeignKey(d => d.ClientId);
     }
     
 }
